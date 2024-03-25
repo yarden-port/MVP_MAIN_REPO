@@ -1,0 +1,76 @@
+name: Promote Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      port_payload:
+        required: true
+        description: >-
+          Port's payload, including details for who triggered the action and
+          general context (blueprint, run id, etc...)
+jobs:
+  promote-deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inform execution of request to promote deployment image
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: PATCH_RUN
+          runId: ${{fromJson(github.event.inputs.port_payload).context.runId}}
+          logMessage: "About to promote deployment image from staging to production..."
+
+      - name: Get the current staging image
+        id: get-staging
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: GET
+          blueprint: running_service
+          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.test_runtime }}
+          runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
+          logMessage: "Getting the current staging image..."
+
+      - name: Set the production image
+        id: set-production
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: UPSERT
+          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.prod_runtime }}
+          blueprint: running_service
+          runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
+          logMessage: "Updating the production image..."
+          relations: |
+            {
+              "image": "${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
+            }
+
+      - name: Inform Port about pull request creation status - Success
+        if: steps.set-production.outcome == 'success'
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: PATCH_RUN
+          runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
+          logMessage: |
+            The production image has been updated successfully
+
+      - name: Inform Port about pull request creation status - Failure
+        if: steps.set-production.outcome != 'success'
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          baseUrl: https://api.getport.io
+          operation: PATCH_RUN
+          runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
+          logMessage: |
+            The promotion of the image to production failed.
