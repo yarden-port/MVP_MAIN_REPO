@@ -43,7 +43,7 @@ jobs:
                "jobUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
                "deployingUser": "${{ github.actor }}",
                "imageTag": "latest",
-               "commitSha": "${{ env.SHA_SHORT }}",
-               "environment":"${{ inputs.environment }}"
+               "environment":"${{ inputs.environment }}",
+               "commitSha": "${{ env.SHA_SHORT }}"
             }
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
