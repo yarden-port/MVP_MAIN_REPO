@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       service:
-        required: false
+        required: true
         description: "Service name to deploy"
         type: string
       environment:
@@ -36,7 +36,7 @@ jobs:
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          identifier: ${{ inputs.context.blueprint }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
+          identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
           blueprint: deployment
           properties: |
             {
