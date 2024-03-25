@@ -36,7 +36,7 @@ jobs:
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          identifier: ${{ context.blueprint }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
+          identifier: ${{ inputs.context.blueprint }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
           blueprint: deployment
           properties: |
             {
