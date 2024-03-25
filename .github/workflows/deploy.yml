@@ -37,7 +37,6 @@ jobs:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
-          entities: ${{ inputs.environment }}
           blueprint: deployment
           properties: |
             {
@@ -45,5 +44,9 @@ jobs:
                "deployingUser": "${{ github.actor }}",
                "imageTag": "latest",
                "commitSha": "${{ env.SHA_SHORT }}"
+            }
+          relations: |
+            {
+              "environment": "${{ inputs.environment }}"
             }
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
