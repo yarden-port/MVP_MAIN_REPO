@@ -16,7 +16,7 @@ on:
 jobs:
   scaffold-service:
     env:
-      ORG_NAME: port-mvp-demo
+      ORG_NAME: yarden-port
     runs-on: ubuntu-latest
     steps:
       - uses: port-labs/cookiecutter-gha@v1.1.1
