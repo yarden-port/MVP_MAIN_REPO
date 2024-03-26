@@ -2,10 +2,10 @@ name: CI
 on:
   workflow_dispatch:
     inputs:
-      service:
-        required: true
-        description: "Service name to deploy"
-        type: string
+      #service:
+       # required: true
+       # description: "Service name to deploy"
+       # type: string
       environment:
         required: true
         default: staging
