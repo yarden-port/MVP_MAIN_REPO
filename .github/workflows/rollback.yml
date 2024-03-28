@@ -35,8 +35,8 @@ jobs:
         id: create-pr
         uses: fjogeleit/yaml-update-action@main
         with:
-          valueFile: 'app/deployment.yaml'  ## replace value
-          propertyPath: 'spec.template.spec.containers[0].image' ## replace value
+          valueFile: 'environments/production/app/deployment.yaml' 
+          propertyPath: 'spec.template.spec.containers[0].image' 
           value: '${{ github.event.inputs.image }}'
           commitChange: true
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
