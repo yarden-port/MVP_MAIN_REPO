@@ -46,9 +46,10 @@ jobs:
           blueprint: running_service
           runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
           logMessage: "Updating the production image..."
+          #"${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
           relations: |
             {
-              "image": "bad_image" #"${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
+              "image": "bad_image" 
             }
 
       - name: Inform Port about pull request creation status - Success
