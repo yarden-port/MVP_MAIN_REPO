@@ -1,4 +1,4 @@
-name: restore env
+name: Restore env
 
 on:
   workflow_dispatch: # Allows manual trigger
@@ -12,7 +12,7 @@ jobs:
 
     - name: Update image tag
       run: |
-        sed -i 's/image: .*/image: bad_image/g' ./environments/production/app/deployment.yaml
+        sed -i 's/image: .*/image: bad_image/g' ./MVP_MAIN_REPO-1/.github/environments/production/app/deployment.yaml
 
     - name: Commit changes
       run: |
