@@ -48,7 +48,7 @@ jobs:
           logMessage: "Updating the production image..."
           relations: |
             {
-              "image": "${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
+              "image": "bad_image" #"${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
             }
 
       - name: Inform Port about pull request creation status - Success
