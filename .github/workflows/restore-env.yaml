@@ -10,13 +10,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Update image tag
+    - name: LS
       run: |
-        sed -i 's/image: .*/image: bad_image/g' ./MVP_MAIN_REPO-1/.github/environments/production/app/deployment.yaml
+        ls -l
 
     - name: Update image tag
       run: |
-        ls -l
+        sed -i 's/image: .*/image: bad_image/g' ./MVP_MAIN_REPO-1/.github/environments/production/app/deployment.yaml
 
     - name: Commit changes
       run: |
