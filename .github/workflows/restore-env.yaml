@@ -23,7 +23,7 @@ jobs:
         targetBranch: main
         masterBranchName: main
         createPR: true
-        branch: deployment/${{ fromJson(github.event.inputs.port_payload).context.runId }}
+        branch: deployment/restore
         message: 'Update deployment image to bad-image'
 
     - name: Merge Pull Request
