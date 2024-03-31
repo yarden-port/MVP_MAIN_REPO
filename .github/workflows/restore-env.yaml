@@ -10,10 +10,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Update image tag
-      run: |
-        sed -i 's/image: .*/image: bad_image/g' ${{ github.workspace }}/MVP_MAIN_REPO-1/.github/environments/production/app/deployment.yaml
-
     - uses: actions/checkout@v3
     - name: Create PR
       id: create-pr
