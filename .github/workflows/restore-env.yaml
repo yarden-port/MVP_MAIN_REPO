@@ -12,8 +12,11 @@ jobs:
 
     - name: Update image tag
       run: |
-        ls -l
         sed -i 's/image: .*/image: bad_image/g' ./MVP_MAIN_REPO-1/.github/environments/production/app/deployment.yaml
+
+    - name: Update image tag
+      run: |
+        ls -l
 
     - name: Commit changes
       run: |
