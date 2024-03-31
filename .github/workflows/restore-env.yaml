@@ -24,7 +24,7 @@ jobs:
         masterBranchName: main
         createPR: true
         branch: deployment/${{ fromJson(github.event.inputs.port_payload).context.runId }}
-        message: 'Update deployment image to ${{ github.event.inputs.image }}'
+        message: 'Update deployment image to bad-image'
 
     - name: Merge Pull Request
       env:
