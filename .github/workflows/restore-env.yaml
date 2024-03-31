@@ -43,3 +43,19 @@ jobs:
         echo "Failed to merge PR. HTTP Status: $HTTP_STATUS"
         echo "merge_status=unsuccessful" >> $GITHUB_ENV
         fi
+
+    - name: Set the production image
+      id: set-production
+      uses: port-labs/port-github-action@v1
+      with:
+        clientId: ${{ secrets.PORT_CLIENT_ID }}
+        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+        operation: UPSERT
+        identifier: "payments_prod_eu"
+        blueprint: running_service
+        #runId: 
+        logMessage: "Updating the production image..."          
+        relations: |
+            {
+                "image": "payments_1_1"
+            }
