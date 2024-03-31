@@ -20,7 +20,7 @@ jobs:
         targetBranch: main
         masterBranchName: main
         createPR: true
-        branch: deployment/restore_rnv
+        branch: deployment/restore_env
         message: 'Update deployment image to bad-image'
 
     - name: Merge Pull Request
