@@ -12,7 +12,7 @@ jobs:
       id: create-pr
       uses: fjogeleit/yaml-update-action@main
       with:
-        valueFile: '/environments/production/app/deployment.yaml' 
+        valueFile: 'environments/production/app/deployment.yaml' 
         propertyPath: 'spec.template.spec.containers[0].image' 
         value: 'payments:bad-image'
         commitChange: true
