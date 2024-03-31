@@ -1,0 +1,26 @@
+name: Update Image Tag
+
+on:
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-image-tag:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Update image tag
+      run: |
+        sed -i 's/image: .*/image: bad_image/g' ./environments/production/app/deployment.yaml
+
+    - name: Commit changes
+      run: |
+        git add ./MVP_MAIN_REPO-1/.github/environments/production/app/deployment.yaml
+        git commit -m "Update image tag to bad_image" || echo "No changes to commit"
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
