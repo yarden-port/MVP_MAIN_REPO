@@ -75,5 +75,6 @@ jobs:
         PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
         # Add any other environment variables required by the restore script here
       run: |
-        bash restoreEnv/restore.sh
+        cd restoreEnv
+        bash restore.sh
     # Make sure restore.sh and any other scripts or files it depends on are in your repository
