@@ -22,9 +22,9 @@ if [ $IS_MIGRATE != true ] ; then
     if [ $MIGRATION_FORMAT = "tar" ] ; then
         if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -n "$AWS_SECRET_ACCESS_KEY" ] &&  [ -n "$S3_BUCKET_REGION" ] && [ -n "$BACKUP_FILE_PATH" ] ; then
             aws s3 cp s3://$BACKUP_FILE_PATH/$FILE_NAME . --region $S3_BUCKET_REGION
-            tar -xvzf ./backup*.tar.gz # ./bk*
+            tar -xvzf ./backup-*.tar.gz ./bk*
         else
-            tar -xvzf ${BACKUP_FILE_PATH} ./bk*
+            tar -xvzf ${BACKUP_FILE_PATH} bk*
         fi
     else
         if [ -n "$AWS_ACCESS_KEY_ID" ] && [ -n "$AWS_SECRET_ACCESS_KEY" ] && [ -n "$S3_BUCKET_REGION" ] && [ -n "$BACKUP_FILE_PATH" ] ; then
