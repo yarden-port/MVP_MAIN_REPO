@@ -71,8 +71,8 @@ jobs:
 
     - name: Execute Restore Script
       env:
-        PORT_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
-        PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
+        PORT_NEW_CLIENT_ID: ${{ secrets.PORT_CLIENT_ID }}
+        PORT_NEW_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
         # Add any other environment variables required by the restore script here
       run: |
         cd restoreEnv
