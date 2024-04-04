@@ -50,6 +50,21 @@ jobs:
             {
               "image": "${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
             }
+            
+      - name: Create PR
+        id: create-pr
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: 'environments/production/app/deployment.yaml' 
+          propertyPath: 'spec.template.spec.containers[0].image' 
+          value: 'payments:bad-image'
+          commitChange: true
+          token: ${{ secrets.ORG_ADMIN_TOKEN }}
+          targetBranch: main
+          masterBranchName: main
+          createPR: true
+          branch: deployment/restore_env
+          message: 'Update deployment image to bad-image'
 
       - name: Inform Port about pull request creation status - Success
         if: steps.set-production.outcome == 'success'
