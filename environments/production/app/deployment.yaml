@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: payments
-          image: payments_1_1
+          image: bad-image
           ports:
             - containerPort: 80
