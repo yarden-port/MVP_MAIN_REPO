@@ -30,6 +30,22 @@ jobs:
           runId: ${{fromJson(github.event.inputs.port_payload).context.runId}}
           logMessage: "About to rollback deployment image in argocd..."
 
+      - name: Set the production image
+        id: set-production
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: UPSERT
+          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.prod_runtime }}
+          blueprint: running_service
+          runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
+          logMessage: "Updating the production image..."          
+          relations: |
+            {
+              "image": "${{ github.event.inputs.image }}"
+            }
+
       - uses: actions/checkout@v3
       - name: Create PR
         id: create-pr
