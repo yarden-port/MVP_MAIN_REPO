@@ -58,7 +58,7 @@ jobs:
         with:
           valueFile: 'environments/production/app/deployment.yaml' 
           propertyPath: 'spec.template.spec.containers[0].image' 
-          value: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.prod_runtime }}':bad-image'
+          value: 'bad-image'
           commitChange: true
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
           targetBranch: main
