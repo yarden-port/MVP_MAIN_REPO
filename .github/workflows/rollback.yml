@@ -119,3 +119,16 @@ jobs:
           operation: PATCH_RUN
           runId: ${{fromJson(github.event.inputs.port_payload).context.runId}}
           logMessage: 'Pull request merge was ${{ env.merge_status }}'
+
+
+      
+      - uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.CLIENT_ID }}
+          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          operation: PATCH_RUN
+          runId: ${{fromJson(github.event.inputs.port_payload).context.runId}}
+          status: "SUCCESS"
+          logMessage: "My log message"
+          summary: "My summary"
+          link: `["https://mylink.com"]`
