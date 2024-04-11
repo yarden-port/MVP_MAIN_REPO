@@ -58,6 +58,8 @@ jobs:
               "environment": "${{ inputs.environment }}"
 
             }
+      - name: Print output from new-running-service
+        run: echo "The output of new-running-service is ${{ steps.new-running-service.outputs.entity }}"
 
       - name: Set the test image
         id: set-dev
