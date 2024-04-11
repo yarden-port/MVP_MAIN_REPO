@@ -34,7 +34,7 @@ jobs:
           blueprint: image
           properties: |
             {
-               "title": "${{fromJson(inputs.port_payload).context.entity}}:1",
+               "title": "${{fromJson(inputs.port_payload).context.entity}}",
                "tags": "1",
                "image_branch": "master"
             }
@@ -60,18 +60,18 @@ jobs:
             }
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
 
-      - name: Set the production image
+      - name: Set the test image
         id: set-dev
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: UPSERT
-          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.prod_runtime }}
+          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.test_runtime }}
           blueprint: services
           runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
-          logMessage: "Updating the production image..."          
+          logMessage: "Updating the test image..."          
           relations: |
             {
-              "image": "${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
+              "image": "${{fromJson(inputs.port_payload).context.entity}}"
             }
