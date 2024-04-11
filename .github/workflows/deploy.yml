@@ -40,12 +40,12 @@ jobs:
                "image_branch": "master"
             }
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
-      - name: "Report deployment Entity to port 🚢"
+      - name: "create new running_service"
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
+          identifier: ${{fromJson(inputs.port_payload).context.entity}}_${{ inputs.environment }}
           blueprint: running_service
           properties: |
             {
@@ -54,7 +54,7 @@ jobs:
             }
           relations: |
             {
-              "image": "${{ fromJson(steps.new-image.outputs.entity)}}",
+              "image": "${{fromJson(inputs.port_payload).context.entity}}",
               "environment":"${{ inputs.environment }}"
 
             }
