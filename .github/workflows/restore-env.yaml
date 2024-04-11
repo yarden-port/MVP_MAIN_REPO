@@ -8,56 +8,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    # - name: Create PR
-    #   id: create-pr
-    #   uses: fjogeleit/yaml-update-action@main
+    # # - name: Create PR
+    # #   id: create-pr
+    # #   uses: fjogeleit/yaml-update-action@main
+    # #   with:
+    # #     valueFile: 'environments/production/app/deployment.yaml' 
+    # #     propertyPath: 'spec.template.spec.containers[0].image' 
+    # #     value: 'payments:bad-image'
+    # #     commitChange: true
+    # #     token: ${{ secrets.ORG_ADMIN_TOKEN }}
+    # #     targetBranch: main
+    # #     masterBranchName: main
+    # #     createPR: true
+    # #     branch: deployment/restore_env
+    # #     message: 'Update deployment image to bad-image'
+
+    # # - name: Merge Pull Request
+    # #   env:
+    # #     GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
+    # #     PR_URL: ${{ fromJson(steps.create-pr.outputs.pull_request).url }}
+    # #   run: |
+    # #     HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+    # #     -X PUT \
+    # #     -H "Accept: application/vnd.github+json" \
+    # #     -H "Authorization: Bearer $GH_TOKEN" \
+    # #     "$PR_URL/merge")
+
+    # #     echo "HTTP Status: $HTTP_STATUS"
+
+    # #     if [ $HTTP_STATUS -eq 200 ]; then
+    # #     echo "Pull request merged successfully."
+    # #     echo "merge_status=successful" >> $GITHUB_ENV
+    # #     else
+    # #     echo "Failed to merge PR. HTTP Status: $HTTP_STATUS"
+    # #     echo "merge_status=unsuccessful" >> $GITHUB_ENV
+    # #     fi
+
+    # - name: Set the production image
+    #   id: set-production
+    #   uses: port-labs/port-github-action@v1
     #   with:
-    #     valueFile: 'environments/production/app/deployment.yaml' 
-    #     propertyPath: 'spec.template.spec.containers[0].image' 
-    #     value: 'payments:bad-image'
-    #     commitChange: true
-    #     token: ${{ secrets.ORG_ADMIN_TOKEN }}
-    #     targetBranch: main
-    #     masterBranchName: main
-    #     createPR: true
-    #     branch: deployment/restore_env
-    #     message: 'Update deployment image to bad-image'
-
-    # - name: Merge Pull Request
-    #   env:
-    #     GH_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
-    #     PR_URL: ${{ fromJson(steps.create-pr.outputs.pull_request).url }}
-    #   run: |
-    #     HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-    #     -X PUT \
-    #     -H "Accept: application/vnd.github+json" \
-    #     -H "Authorization: Bearer $GH_TOKEN" \
-    #     "$PR_URL/merge")
-
-    #     echo "HTTP Status: $HTTP_STATUS"
-
-    #     if [ $HTTP_STATUS -eq 200 ]; then
-    #     echo "Pull request merged successfully."
-    #     echo "merge_status=successful" >> $GITHUB_ENV
-    #     else
-    #     echo "Failed to merge PR. HTTP Status: $HTTP_STATUS"
-    #     echo "merge_status=unsuccessful" >> $GITHUB_ENV
-    #     fi
-
-    - name: Set the production image
-      id: set-production
-      uses: port-labs/port-github-action@v1
-      with:
-        clientId: ${{ secrets.PORT_CLIENT_ID }}
-        clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-        operation: UPSERT
-        identifier: "payments_prod_eu"
-        blueprint: running_service
-        logMessage: "Updating the production image..."          
-        relations: |
-            {
-                "image": "payments_1_1"
-            }
+    #     clientId: ${{ secrets.PORT_CLIENT_ID }}
+    #     clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+    #     operation: UPSERT
+    #     identifier: "payments_prod_eu"
+    #     blueprint: running_service
+    #     logMessage: "Updating the production image..."          
+    #     relations: |
+    #         {
+    #             "image": "payments_1_1"
+    #         }
 
     - name: Set up Python for restore script
       uses: actions/setup-python@v2
