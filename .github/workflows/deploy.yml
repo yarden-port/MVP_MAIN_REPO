@@ -26,7 +26,6 @@ jobs:
       - name: Extract SHA short
         run: echo "SHA_SHORT=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
       - name: "Create new image"
-        id: new-image
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
@@ -40,12 +39,13 @@ jobs:
                "image_branch": "master"
             }
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
+      
       - name: "create new running_service"
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          identifier: ${{fromJson(inputs.port_payload).context.entity}}_${{ inputs.environment }}
+          identifier: ${{fromJson(inputs.port_payload).context.entity}}-${{ inputs.environment }}
           blueprint: running_service
           properties: |
             {
@@ -55,7 +55,7 @@ jobs:
           relations: |
             {
               "image": "${{fromJson(inputs.port_payload).context.entity}}",
-              "environment":"${{ inputs.environment }}"
+              "environment": "${{ inputs.environment }}"
 
             }
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
