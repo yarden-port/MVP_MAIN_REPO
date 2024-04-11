@@ -41,6 +41,7 @@ jobs:
           runId: "${{fromJson(inputs.port_payload).context.runId}}"
       
       - name: "create new running_service"
+        id: "new-running-service"
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
@@ -66,11 +67,11 @@ jobs:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: UPSERT
-          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.test_runtime }}
+          identifier: ${{fromJson(github.event.inputs.port_payload).context.entity }}
           blueprint: service
           runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
           logMessage: "Updating the test image..."          
           relations: |
             {
-              "image": "${{fromJson(inputs.port_payload).context.entity}}"
+              "test_runtime": "${{ fromJson(steps.new-running-service.outputs.entity) }}"
             }
