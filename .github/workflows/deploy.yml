@@ -25,6 +25,21 @@ jobs:
     steps:
       - name: Extract SHA short
         run: echo "SHA_SHORT=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - name: "Create new image"
+        id: new-image
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
+          blueprint: image
+          properties: |
+            {
+               "title": "${{fromJson(inputs.port_payload).context.entity}}",
+               "tags": "1",
+               "image_branch": "master"
+            }
+          runId: "${{fromJson(inputs.port_payload).context.runId}}"
       - name: "Report deployment Entity to port 🚢"
         uses: port-labs/port-github-action@v1
         with:
@@ -39,7 +54,7 @@ jobs:
             }
           relations: |
             {
-              "image": "latest",
+              "image": "${{ fromJson(steps.new-image.outputs.entity)}}",
               "environment":"${{ inputs.environment }}"
 
             }
