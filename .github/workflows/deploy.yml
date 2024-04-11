@@ -67,7 +67,7 @@ jobs:
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: UPSERT
           identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.test_runtime }}
-          blueprint: services
+          blueprint: service
           runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
           logMessage: "Updating the test image..."          
           relations: |
