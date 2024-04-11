@@ -2,10 +2,6 @@ name: CI
 on:
   workflow_dispatch:
     inputs:
-      #service:
-       # required: true
-       # description: "Service name to deploy"
-       # type: string
       environment:
         required: true
         default: staging
@@ -23,30 +19,44 @@ jobs:
       - id: echo-deploy
         run: echo "deploy"
 
-      # ADD YOUR DEPLOYMENT LOGIC HERE!
+  report-deployment:
+    name: Report new deployment Entity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract SHA short
+        run: echo "SHA_SHORT=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - name: "Report deployment Entity to port 🚢"
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
+          blueprint: running_service
+          properties: |
+            {
+               "syncStatus": "Synced",
+               "healthStatus": "Healthy"
+            }
+          relations: |
+            {
+              "image": "latest",
+              "environment":"${{ inputs.environment }}"
 
-  # report-deployment:
-  #   name: Report new deployment Entity
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Extract SHA short
-  #       run: echo "SHA_SHORT=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
-  #     - name: "Report deployment Entity to port 🚢"
-  #       uses: port-labs/port-github-action@v1
-  #       with:
-  #         clientId: ${{ secrets.PORT_CLIENT_ID }}
-  #         clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-  #         identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
-  #         blueprint: deployment
-  #         properties: |
-  #           {
-  #              "jobUrl": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}",
-  #              "deployingUser": "${{ github.actor }}",
-  #              "imageTag": "latest",
-  #              "commitSha": "${{ env.SHA_SHORT }}"
-  #           }
-  #         relations: |
-  #           {
-  #             "environment": "${{ inputs.environment }}"
-  #           }
-  #         runId: "${{fromJson(inputs.port_payload).context.runId}}"
+            }
+          runId: "${{fromJson(inputs.port_payload).context.runId}}"
+
+      - name: Set the production image
+        id: set-dev
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: UPSERT
+          identifier: ${{fromJson(github.event.inputs.port_payload).payload.entity.relations.prod_runtime }}
+          blueprint: services
+          runId: ${{ fromJson(github.event.inputs.port_payload).context.runId }}
+          logMessage: "Updating the production image..."          
+          relations: |
+            {
+              "image": "${{ fromJson(steps.get-staging.outputs.entity).relations.image }}"
+            }
