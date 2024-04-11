@@ -31,11 +31,11 @@ jobs:
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          identifier: ${{ inputs.service }}-${{ inputs.environment }}-${{ env.SHA_SHORT }}
+          identifier: ${{fromJson(inputs.port_payload).context.entity}}
           blueprint: image
           properties: |
             {
-               "title": "${{fromJson(inputs.port_payload).context.entity}}",
+               "title": "${{fromJson(inputs.port_payload).context.entity}}:1",
                "tags": "1",
                "image_branch": "master"
             }
