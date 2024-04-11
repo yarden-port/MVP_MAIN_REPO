@@ -72,5 +72,5 @@ jobs:
           logMessage: "Updating the test image..."          
           relations: |
             {
-              "test_runtime": "${{fromJson(inputs.port_payload).context.entity}}-${{ inputs.environment }}"
+              "dev_runtime": "${{fromJson(inputs.port_payload).context.entity}}-${{ inputs.environment }}"
             }
