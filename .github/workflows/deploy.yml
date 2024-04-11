@@ -38,7 +38,6 @@ jobs:
                "tags": "1",
                "image_branch": "master"
             }
-          runId: "${{fromJson(inputs.port_payload).context.runId}}"
       
       - name: "create new running_service"
         id: "new-running-service"
