@@ -72,5 +72,5 @@ jobs:
           logMessage: "Updating the test image..."          
           relations: |
             {
-              "test_runtime": "${{ fromJson(steps.new-running-service.outputs.entity) }}"
+              "test_runtime": "${{ fromJson(steps.new-running-service.outputs.entity).identifier }}"
             }
