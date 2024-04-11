@@ -58,7 +58,6 @@ jobs:
               "environment": "${{ inputs.environment }}"
 
             }
-          runId: "${{fromJson(inputs.port_payload).context.runId}}"
 
       - name: Set the test image
         id: set-dev
